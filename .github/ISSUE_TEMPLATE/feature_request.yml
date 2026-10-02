@@ -1,0 +1,14 @@
+name: Feature request
+description: Propose a capability or platform improvement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and use case
+    validations:
+      required: true
+  - type: textarea
+    id: enforcement
+    attributes:
+      label: Expected platform enforcement
+      description: Explain how the behavior should be implemented and verified on each platform.

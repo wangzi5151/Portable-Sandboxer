@@ -1,0 +1,22 @@
+name: Bug report
+description: Report a reproducible issue
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach malware or secrets. This prototype is not a secure malware-analysis sandbox.
+  - type: input
+    id: version
+    attributes:
+      label: Version and operating system
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs

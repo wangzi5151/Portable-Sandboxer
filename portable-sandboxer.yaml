@@ -1,0 +1,11 @@
+# Put this file next to the executable. It is loaded at startup and pre-fills the
+# UI form. Only the options listed in README.md are enforced by a backend; the
+# rest are intentionally absent rather than silently ignored.
+version: 1
+preset: try-unknown-portable-app   # one of the preset IDs in internal/config
+network: false                      # enforced on Linux (net namespace) and macOS (Seatbelt)
+resources:
+  memory_mb: 1024                   # enforced on Windows (Job Object); best effort on Linux
+snapshot:
+  enabled: false                    # opt-in; when true the workspace is copied before cleanup
+  dir: ""                           # empty uses the per-user default location

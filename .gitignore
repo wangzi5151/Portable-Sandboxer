@@ -1,0 +1,6 @@
+/dist/
+*.exe
+portable-sandboxer
+portable-sandboxer-*
+*.test
+.DS_Store

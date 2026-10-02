@@ -1,0 +1,60 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-and-build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - name: Install Linux GUI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev xorg-dev libxkbcommon-dev
+      - run: go vet ./...
+      - run: go test ./...
+      - run: go build -trimpath -ldflags="-s -w" -o portable-sandboxer-linux-amd64 .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portable-sandboxer-linux-amd64
+          path: portable-sandboxer-linux-amd64
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - name: Use bundled MinGW
+        run: |
+          if (Test-Path 'C:\mingw64\bin') { Add-Content $env:GITHUB_PATH 'C:\mingw64\bin' }
+        shell: pwsh
+      - run: go vet ./...
+      - run: go test ./...
+      - run: go build -trimpath -ldflags="-s -w" -o portable-sandboxer-windows-amd64.exe .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portable-sandboxer-windows-amd64
+          path: portable-sandboxer-windows-amd64.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+      - run: go vet ./...
+      - run: go test ./...
+      - run: go build -trimpath -ldflags="-s -w" -o portable-sandboxer-darwin-$(go env GOARCH) .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portable-sandboxer-darwin
+          path: portable-sandboxer-darwin-*
